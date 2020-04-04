@@ -12,8 +12,8 @@ function BookShelf(props) {
           <p>There's nothing to show here</p>
         ) : (
           <ol className="books-grid">
-            {props.books.map((book, id) => (
-              <li key={id}>
+            {props.books.map(book => (
+              <li key={book.id}>
                 <Book
                   title={book.title}
                   authors={book.authors}
