@@ -30,12 +30,8 @@ class SearchBooks extends Component {
         <div className="search-books-results">
           <ol className="books-grid">
             {this.state.books.map((book, id) => (
-              <li key={id}>
-                <Book
-                  title={book.title}
-                  authors={book.authors}
-                  image={book.imageLinks.smallThumbnail}
-                />
+              <li key={book.id}>
+                <Book book={book} onUpdate={this.props.onUpdate} />
               </li>
             ))}
           </ol>
@@ -46,7 +42,8 @@ class SearchBooks extends Component {
 }
 
 SearchBooks.propTypes = {
-  books: PropTypes.array.isRequired
+  books: PropTypes.array.isRequired,
+  onUpdate: PropTypes.func.isRequired
 }
 
 export default SearchBooks

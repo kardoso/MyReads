@@ -9,22 +9,16 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    allBooks: [],
-    currentlyReading: [],
-    wantToRead: [],
-    read: []
+    books: []
   }
 
   componentDidMount() {
-    BooksAPI.getAll().then(allBooks => {
-      this.setState(() => ({
-        allBooks,
-        currentlyReading: allBooks.filter(
-          book => book.shelf === 'currentlyReading'
-        ),
-        wantToRead: allBooks.filter(book => book.shelf === 'wantToRead'),
-        read: allBooks.filter(book => book.shelf === 'read')
-      }))
+    this.getBooks()
+  }
+
+  getBooks = () => {
+    BooksAPI.getAll().then(books => {
+      this.setState({ books })
     })
   }
 
@@ -35,16 +29,14 @@ class BooksApp extends React.Component {
           exact
           path="/"
           render={() => (
-            <ListBooks
-              currentlyReading={this.state.currentlyReading}
-              wantToRead={this.state.wantToRead}
-              read={this.state.read}
-            />
+            <ListBooks books={this.state.books} onUpdate={this.getBooks} />
           )}
         />
         <Route
           path="/search"
-          render={() => <SearchBooks books={this.state.allBooks} />}
+          render={() => (
+            <SearchBooks books={this.state.books} onUpdate={this.getBooks} />
+          )}
         />
       </div>
     )
