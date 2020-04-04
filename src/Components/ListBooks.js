@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import BookShelf from './BookShelf'
 
 function ListBooks(props) {
@@ -20,7 +21,7 @@ function ListBooks(props) {
         </div>
       </div>
       <div className="open-search">
-        <button onClick={() => console.log('#TODO')}>Add a book</button>
+        <Link to="/search" className="open-search-link" />
       </div>
     </div>
   )
