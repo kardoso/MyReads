@@ -33,7 +33,7 @@ function Book(props) {
 
 Book.propTypes = {
   title: PropTypes.string.isRequired,
-  authors: PropTypes.string.isRequired,
+  authors: PropTypes.array.isRequired,
   image: PropTypes.string.isRequired
 }
 
