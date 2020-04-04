@@ -3,9 +3,13 @@ import PropTypes from 'prop-types'
 import Book from './Book'
 
 class SearchBooks extends Component {
-  state = {
-    books: this.props.books
+  constructor(props) {
+    super(props)
+    this.state = {
+      books: props.books
+    }
   }
+
   render() {
     return (
       <div className="search-books">
