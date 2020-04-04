@@ -1,8 +1,8 @@
 import React from 'react'
 import * as BooksAPI from './services/BooksAPI'
 
-import BookShelf from './Components/BookShelf'
 import SearchBooks from './Components/SearchBooks'
+import ListBooks from './Components/ListBooks'
 
 import './App.css'
 
@@ -40,30 +40,11 @@ class BooksApp extends React.Component {
         {this.state.showSearchPage ? (
           <SearchBooks books={this.state.allBooks} />
         ) : (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                <BookShelf
-                  shelfTitle="Currently Reading"
-                  books={this.state.currentlyReading}
-                />
-
-                <BookShelf
-                  shelfTitle="Want to Read"
-                  books={this.state.wantToRead}
-                />
-                <BookShelf shelfTitle="Read" books={this.state.read} />
-              </div>
-            </div>
-            <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>
-                Add a book
-              </button>
-            </div>
-          </div>
+          <ListBooks
+            currentlyReading={this.state.currentlyReading}
+            wantToRead={this.state.wantToRead}
+            read={this.state.read}
+          />
         )}
       </div>
     )
