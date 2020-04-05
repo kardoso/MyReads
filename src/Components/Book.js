@@ -5,7 +5,7 @@ import * as BooksAPI from '../services/BooksAPI'
 class Book extends Component {
   updateShelf(e, book) {
     BooksAPI.update(book, e.target.value).then((result) => {
-      this.props.onUpdate()
+      if (this.props.onUpdate) this.props.onUpdate()
     })
   }
 
