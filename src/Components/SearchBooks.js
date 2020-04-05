@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import Book from './Book'
 import * as BooksAPI from '../services/BooksAPI'
@@ -7,45 +6,32 @@ import * as BooksAPI from '../services/BooksAPI'
 class SearchBooks extends Component {
   constructor(props) {
     super(props)
-    this.books = this.props.books
     this.state = {
+      books: 0,
       searchString: '',
     }
 
     this.updateSearch = this.updateSearch.bind(this)
   }
 
-  componentDidMount() {
-    this.getBooks()
-  }
-
-  getBooks = () => {
-    BooksAPI.getAll().then((books) => {
-      this.books = books
+  findBooks = (query) => {
+    if (query === '') {
+      this.setState({ books: [] })
+      return
+    }
+    BooksAPI.search(query).then((books) => {
+      this.setState({ books })
     })
   }
 
-  updateSearch(e) {
+  updateSearch(query) {
     this.setState({
-      searchString: e.target.value,
+      searchString: query,
     })
+    this.findBooks(query)
   }
 
   render() {
-    const books = this.books.filter(
-      (book) =>
-        book.title
-          .toLowerCase()
-          .includes(this.state.searchString.toLowerCase()) ||
-        book.authors
-          .map((author) => {
-            return author
-          })
-          .join('')
-          .toLowerCase()
-          .includes(this.state.searchString.toLowerCase())
-    )
-
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -54,33 +40,34 @@ class SearchBooks extends Component {
             <input
               type="text"
               placeholder="Search by title or author"
-              onChange={this.updateSearch}
+              onChange={(e) => this.updateSearch(e.target.value)}
             />
           </div>
         </div>
         <div className="search-books-results">
-          {books.length > 0 ? (
-            <ol className="books-grid">
-              {books.map((book) => (
-                <li key={book.id}>
-                  <Book book={book} onUpdate={this.props.onUpdate} />
-                </li>
-              ))}
-            </ol>
+          {this.state.books ? (
+            this.state.books.length > 0 ? (
+              <ol className="books-grid">
+                {this.state.books.map((book) => (
+                  <li key={book.id}>
+                    <Book book={book} />
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <div className="books-grid">
+                <p>No books found for this search</p>
+              </div>
+            )
           ) : (
             <div className="books-grid">
-              <p>No books found for this search</p>
+              <p>Enter your search in the field above</p>
             </div>
           )}
         </div>
       </div>
     )
   }
-}
-
-SearchBooks.propTypes = {
-  books: PropTypes.array.isRequired,
-  onUpdate: PropTypes.func.isRequired,
 }
 
 export default SearchBooks
