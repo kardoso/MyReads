@@ -33,7 +33,7 @@ class SearchBooks extends Component {
     BooksAPI.search(query)
       .then((books) => {
         const booksWithShelf = books.map((bookResult) => {
-          this.booksOnShelf.map((book) => {
+          this.booksOnShelf.forEach((book) => {
             if (book.id === bookResult.id) {
               bookResult.shelf = book.shelf
             }
