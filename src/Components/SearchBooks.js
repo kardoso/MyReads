@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import Book from './Book'
+import * as BooksAPI from '../services/BooksAPI'
 
 class SearchBooks extends Component {
   constructor(props) {
@@ -12,6 +13,16 @@ class SearchBooks extends Component {
     }
 
     this.updateSearch = this.updateSearch.bind(this)
+  }
+
+  componentDidMount() {
+    this.getBooks()
+  }
+
+  getBooks = () => {
+    BooksAPI.getAll().then((books) => {
+      this.books = books
+    })
   }
 
   updateSearch(e) {

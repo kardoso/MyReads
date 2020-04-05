@@ -9,7 +9,7 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    books: []
+    books: [],
   }
 
   componentDidMount() {
@@ -17,7 +17,7 @@ class BooksApp extends React.Component {
   }
 
   getBooks = () => {
-    BooksAPI.getAll().then(books => {
+    BooksAPI.getAll().then((books) => {
       this.setState({ books })
     })
   }
