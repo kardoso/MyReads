@@ -44,7 +44,6 @@ class SearchBooks extends Component {
       })
       .then((books) => {
         this.setState({ books })
-        console.log(books)
       })
   }
 
