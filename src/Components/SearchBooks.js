@@ -8,7 +8,7 @@ class SearchBooks extends Component {
     super(props)
     this.books = this.props.books
     this.state = {
-      searchString: ''
+      searchString: '',
     }
 
     this.updateSearch = this.updateSearch.bind(this)
@@ -16,18 +16,18 @@ class SearchBooks extends Component {
 
   updateSearch(e) {
     this.setState({
-      searchString: e.target.value
+      searchString: e.target.value,
     })
   }
 
   render() {
     const books = this.books.filter(
-      book =>
+      (book) =>
         book.title
           .toLowerCase()
           .includes(this.state.searchString.toLowerCase()) ||
         book.authors
-          .map(author => {
+          .map((author) => {
             return author
           })
           .join('')
@@ -48,13 +48,19 @@ class SearchBooks extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid">
-            {books.map(book => (
-              <li key={book.id}>
-                <Book book={book} onUpdate={this.props.onUpdate} />
-              </li>
-            ))}
-          </ol>
+          {books.length > 0 ? (
+            <ol className="books-grid">
+              {books.map((book) => (
+                <li key={book.id}>
+                  <Book book={book} onUpdate={this.props.onUpdate} />
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <div className="books-grid">
+              <p>No books found for this search</p>
+            </div>
+          )}
         </div>
       </div>
     )
@@ -63,7 +69,7 @@ class SearchBooks extends Component {
 
 SearchBooks.propTypes = {
   books: PropTypes.array.isRequired,
-  onUpdate: PropTypes.func.isRequired
+  onUpdate: PropTypes.func.isRequired,
 }
 
 export default SearchBooks
