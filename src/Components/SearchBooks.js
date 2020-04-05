@@ -6,6 +6,7 @@ import * as BooksAPI from '../services/BooksAPI'
 class SearchBooks extends Component {
   constructor(props) {
     super(props)
+    this.booksOnShelf = []
     this.state = {
       books: 0,
       searchString: '',
@@ -14,14 +15,37 @@ class SearchBooks extends Component {
     this.updateSearch = this.updateSearch.bind(this)
   }
 
+  componentDidMount() {
+    this.getBooks()
+  }
+
+  getBooks = () => {
+    BooksAPI.getAll().then((books) => {
+      this.booksOnShelf = books
+    })
+  }
+
   findBooks = (query) => {
     if (query === '') {
       this.setState({ books: [] })
       return
     }
-    BooksAPI.search(query).then((books) => {
-      this.setState({ books })
-    })
+    BooksAPI.search(query)
+      .then((books) => {
+        const booksWithShelf = books.map((bookResult) => {
+          this.booksOnShelf.map((book) => {
+            if (book.id === bookResult.id) {
+              bookResult.shelf = book.shelf
+            }
+          })
+          return bookResult
+        })
+        return booksWithShelf
+      })
+      .then((books) => {
+        this.setState({ books })
+        console.log(books)
+      })
   }
 
   updateSearch(query) {
@@ -29,6 +53,16 @@ class SearchBooks extends Component {
       searchString: query,
     })
     this.findBooks(query)
+  }
+
+  onUpdate = () => {
+    this.props.onBookChange()
+    const goBackConfirmation = window.confirm(
+      'Book was successfully tagged. Do you want to return to the main page?'
+    )
+    if (goBackConfirmation) {
+      this.props.history.push('/')
+    }
   }
 
   render() {
@@ -50,7 +84,7 @@ class SearchBooks extends Component {
               <ol className="books-grid">
                 {this.state.books.map((book) => (
                   <li key={book.id}>
-                    <Book book={book} />
+                    <Book book={book} onUpdate={this.onUpdate} />
                   </li>
                 ))}
               </ol>
