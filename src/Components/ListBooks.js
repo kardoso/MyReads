@@ -6,11 +6,12 @@ import BookShelf from './BookShelf'
 class ListBooks extends Component {
   render() {
     const { books, onUpdate } = this.props
-    const currentlyReading = books.filter(
-      currently => currently.shelf === 'currentlyReading'
-    )
-    const wantToRead = books.filter(want => want.shelf === 'wantToRead')
-    const read = books.filter(read => read.shelf === 'read')
+
+    const shelves = {
+      currentlyReading: ['Currently Reading', 'currentlyReading'],
+      wantToRead: ['Want to Read', 'wantToRead'],
+      read: ['Read', 'read'],
+    }
 
     return (
       <div className="list-books">
@@ -19,18 +20,14 @@ class ListBooks extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            <BookShelf
-              shelfTitle="Currently Reading"
-              books={currentlyReading}
-              onUpdate={onUpdate}
-            />
-
-            <BookShelf
-              shelfTitle="Want to Read"
-              books={wantToRead}
-              onUpdate={onUpdate}
-            />
-            <BookShelf shelfTitle="Read" books={read} onUpdate={onUpdate} />
+            {Object.keys(shelves).map((shelf, id) => (
+              <BookShelf
+                key={id}
+                shelfTitle={shelves[shelf][0]}
+                books={books.filter((book) => book.shelf === shelves[shelf][1])}
+                onUpdate={onUpdate}
+              />
+            ))}
           </div>
         </div>
         <div className="open-search">
@@ -43,7 +40,7 @@ class ListBooks extends Component {
 
 ListBooks.propTypes = {
   books: PropTypes.array.isRequired,
-  onUpdate: PropTypes.func.isRequired
+  onUpdate: PropTypes.func.isRequired,
 }
 
 export default ListBooks
