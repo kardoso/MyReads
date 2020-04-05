@@ -32,15 +32,19 @@ class SearchBooks extends Component {
     }
     BooksAPI.search(query)
       .then((books) => {
-        const booksWithShelf = books.map((bookResult) => {
-          this.booksOnShelf.forEach((book) => {
-            if (book.id === bookResult.id) {
-              bookResult.shelf = book.shelf
-            }
+        try {
+          const booksWithShelf = books.map((bookResult) => {
+            this.booksOnShelf.forEach((book) => {
+              if (book.id === bookResult.id) {
+                bookResult.shelf = book.shelf
+              }
+            })
+            return bookResult
           })
-          return bookResult
-        })
-        return booksWithShelf
+          return booksWithShelf
+        } catch (error) {
+          return []
+        }
       })
       .then((books) => {
         this.setState({ books })
