@@ -4,7 +4,7 @@ import * as BooksAPI from '../services/BooksAPI'
 
 class Book extends Component {
   updateShelf(e, book) {
-    BooksAPI.update(book, e.target.value).then(result => {
+    BooksAPI.update(book, e.target.value).then((result) => {
       this.props.onUpdate()
     })
   }
@@ -19,12 +19,16 @@ class Book extends Component {
             style={{
               width: 128,
               height: 193,
-              backgroundImage: `url(${book.imageLinks.smallThumbnail} )`
+              backgroundImage: `url(${
+                book.imageLinks
+                  ? book.imageLinks.thumbnail
+                  : 'http://via.placeholder.com/128x193'
+              })`,
             }}
           ></div>
           <div className="book-shelf-changer">
             <select
-              onChange={e => this.updateShelf(e, book)}
+              onChange={(e) => this.updateShelf(e, book)}
               defaultValue={
                 typeof book.shelf === 'undefined' ? 'none' : book.shelf
               }
@@ -46,7 +50,7 @@ class Book extends Component {
 
 Book.propTypes = {
   book: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func.isRequired
+  onUpdate: PropTypes.func.isRequired,
 }
 
 export default Book
